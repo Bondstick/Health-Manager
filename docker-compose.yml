@@ -17,8 +17,12 @@ services:
     env_file: .env
     environment:
       DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      FRONTEND_DIST: /app/static
+    volumes:
+      # The built React app, produced by `npm run build` in frontend/.
+      - ./frontend/dist:/app/static:ro
     ports:
-      # Bound to this machine only. The public tunnel will forward to it.
+      # Bound to this machine only. The public tunnel forwards to it.
       - "127.0.0.1:8000:8000"
 
 volumes:

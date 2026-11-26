@@ -1,5 +1,6 @@
-// Base address of the FastAPI backend. Override with VITE_API_URL when deploying.
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+// Base address of the API. Empty in production, so the app calls its own server.
+// In development, .env.development points it at http://localhost:8000.
+export const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
 
 // The demo patient. Real sign-in replaces this later.
 export const PATIENT_REF = "DEMO-MAYA";
