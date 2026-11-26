@@ -4,9 +4,22 @@ services:
     restart: unless-stopped
     env_file: .env
     ports:
-      - "5432:5432"
+      # Bound to this machine only, so other devices on the network cannot reach the database.
+      - "127.0.0.1:5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      - db
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    ports:
+      # Bound to this machine only. The public tunnel will forward to it.
+      - "127.0.0.1:8000:8000"
 
 volumes:
   pgdata:
