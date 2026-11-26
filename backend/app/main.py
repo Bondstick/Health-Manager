@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
@@ -16,6 +17,14 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Personal Health Manager API", version="0.3.0", lifespan=lifespan)
 app.include_router(patient_router)
+
+# Only the local dev site may call the API from a browser. Extend this list when deploying.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:5173", "http://localhost:5173"],
+    allow_methods=["GET"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/health")
