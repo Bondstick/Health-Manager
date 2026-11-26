@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import text
 
 from . import db
+from .routes import router as patient_router
 
 
 @asynccontextmanager
@@ -13,7 +14,8 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="Personal Health Manager API", version="0.2.0", lifespan=lifespan)
+app = FastAPI(title="Personal Health Manager API", version="0.3.0", lifespan=lifespan)
+app.include_router(patient_router)
 
 
 @app.get("/health")
